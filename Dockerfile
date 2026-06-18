@@ -5,9 +5,10 @@ WORKDIR /app
 COPY . .
 
 RUN apt-get update && apt-get install -y \
-    git unzip zip libzip-dev
+    git unzip zip libzip-dev libpng-dev libjpeg-dev libfreetype6-dev
 
-RUN docker-php-ext-install zip
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install zip gd
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
